@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+
+<head>
+
+
+  <meta charset="utf-8" />
+
+
+  <meta name="generator" content="pandoc" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+
+  <title>TP Dynamique du Véhicule Automobile</title>
+
+
+  <style>
+
+
+    code{white-space: pre-wrap;}
+
+
+    span.smallcaps{font-variant: small-caps;}
+
+
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+
+
+    div.column{flex: auto; overflow-x: auto;}
+
+
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+
+    /* The extra [class] is a hack that increases specificity enough to
+
+
+       override a similar rule in reveal.js */
+
+
+    ul.task-list[class]{list-style: none;}
+
+
+    ul.task-list li input[type="checkbox"] {
+
+
+      font-size: inherit;
+
+
+      width: 0.8em;
+
+
+      margin: 0 0.8em 0.2em -1.6em;
+
+
+      vertical-align: middle;
+
+
+    }
+
+
+  </style>
+
+
+  <link rel="stylesheet" href="src\style.css" />
+
+
+  <script src=""></script>
+
+
+  <script
+
+
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+
+
+  type="text/javascript"></script>
+
+
+  <!--[if lt IE 9]>
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+
+
+  <![endif]-->
+
+
+</head>
+
+
+<body>
+
+
+<header id="title-block-header">
+
+
+<h1 class="title">TP Dynamique du Véhicule Automobile</h1>
+
+
+</header>
+
+
+<nav id="TOC" role="doc-toc">
+
+
+<ul>
+
+
+<li><a href="#lignes-directrices-pour-le-rendu-final"
+
+
+id="toc-lignes-directrices-pour-le-rendu-final">0. Lignes directrices
+
+
+pour le rendu final</a></li>
+
+
+<li><a href="#modélisation-des-forces-latérales"
+
+
+id="toc-modélisation-des-forces-latérales">1. Modélisation des forces
+
+
+latérales</a></li>
+
+
+<li><a href="#validation-du-modèle-à-2ddl-en-bo"
+
+
+id="toc-validation-du-modèle-à-2ddl-en-bo">2. Validation du modèle à
+
+
+2ddl en BO</a></li>
+
+
+<li><a href="#synthèse-de-la-commande-à-rejet-de-perturbation"
+
+
+id="toc-synthèse-de-la-commande-à-rejet-de-perturbation">3. Synthèse de
+
+
+la commande à rejet de perturbation</a></li>
+
+
+<li><a href="#annexe" id="toc-annexe">Annexe</a></li>
+
+
+</ul>
+
+
+</nav>
+
+
+<h1 id="lignes-directrices-pour-le-rendu-final">0. Lignes directrices
+
+
+pour le rendu final</h1>
+
+
+<ul>
+
+
+<li>Les rendus finaux sont à envoyer au plus tard le 26 janvier 2025.
+
+
+<ul>
+
+
+<li>Email: oussama.djadane [at] u-picardie.fr</li>
+
+
+</ul></li>
+
+
+<li>Le rendu doit être sous format d’une archive zip contenant
+
+
+<ul>
+
+
+<li>Le compte-rendu au format PDF</li>
+
+
+<li>Les fichiers de simulations dans l’ordre (renommer les fichiers en
+
+
+commençant par sim01, sim02, … )</li>
+
+
+</ul></li>
+
+
+</ul>
+
+
+<h4 id="compte-rendu">Compte-rendu</h4>
+
+
+<ul>
+
+
+<li>Commencez par une brève introduction expliquant le système et les
+
+
+objectifs du travail.</li>
+
+
+<li>Listez les états, entrée et sorties de chaque système ainsi qu’une
+
+
+nomenclature de ses paramètres avec leur valeur numérique.</li>
+
+
+<li>Explicitez clairement toutes les valeurs calculées (gains de
+
+
+commande, coefficients identifiés…)</li>
+
+
+<li>Il est possible de prendre en photos les calculs manuels ou schémas
+
+
+dessinés à la main pour les inclure dans le rapport.</li>
+
+
+<li>Rédigez votre compte-rendu de façon à ce qu’un lecteur externe
+
+
+puisse comprendre le sujet en se basant uniquement sur votre document :
+
+
+tous les résultats doivent être expliqués avec du texte entrelacé entre
+
+
+des figures et graphiques.</li>
+
+
+</ul>
+
+
+<h4 id="graphique">Graphique</h4>
+
+
+<ul>
+
+
+<li>Fond blanc, grille noire.</li>
+
+
+<li>Epaisseur et couleur adéquates des courbes.</li>
+
+
+<li>Unités étiquetées sur les axes.</li>
+
+
+<li>Courbe unique par graphique ou bien légende descriptive si plusieurs
+
+
+courbes.</li>
+
+
+<li>(“File &gt; Print To Figure” ou bien utiliser le bloc “To workspace”
+
+
+pour récupérer les données dans Matlab, puis tracer avec la commande
+
+
+plot)</li>
+
+
+</ul>
+
+
+<h4 id="fichiers-de-simulation">Fichiers de simulation</h4>
+
+
+<ul>
+
+
+<li>Le code doit être facilement compréhensible par un lecteur
+
+
+externe.</li>
+
+
+<li>Incluez des commentaires.</li>
+
+
+<li>Explicitez le nom des constantes et des variables.</li>
+
+
+</ul>
+
+
+<p style="text-align:center;">
+
+
+~~ ~~ ~~ ~~ ~~
+
+
+</p>
+
+
+<ul>
+
+
+<li>Fichiers de données
+
+
+<ul>
+
+
+<li><a
+
+
+href="data/donneesInterpolees.mat">donneesInterpolees.mat</a></li>
+
+
+<li><a
+
+
+href="data/donneesValidationBoucleOuverte.mat">donneesValidationBoucleOuverte.mat</a></li>
+
+
+<li><a href="data/donneesDelta36kph.mat">donneesDelta36kph.mat</a></li>
+
+
+<li><a
+
+
+href="data/donneesDpsiref36kph.mat">donneesDpsiref36kph.mat</a></li>
+
+
+</ul></li>
+
+
+</ul>
+
+
+<p style="text-align:center;">
+
+
+~~ ~~ ~~ ~~ ~~
+
+
+</p>
+
+
+<h1 id="modélisation-des-forces-latérales">1. Modélisation des forces
+
+
+latérales</h1>
+
+
+<ul>
+
+
+<li>Tracer la charge verticale <span class="math inline">\(F_z\)</span>
+
+
+sur la roue pour chaque essieu (variable Carsim : Fz_A1/2, Fz_A2/2).
+
+
+<ul>
+
+
+<li>En déduire la charge vertical <span
+
+
+class="math inline">\(F_z\)</span> sur la roue de chaque essieux (valeur
+
+
+arrondie à la dizaine près).</li>
+
+
+</ul></li>
+
+
+<li>Tracer l’angle de dérive <span class="math inline">\(\alpha\)</span>
+
+
+de la roue pour chaque essieu (variables Carsim : (Alpha_L1+Alpha_R1)/2,
+
+
+(Alpha_L2+Alpha_R2)/2)
+
+
+<ul>
+
+
+<li>En déduire l’intervalle de fonctionnement.</li>
+
+
+</ul></li>
+
+
+<li>Tracer la courbe <span class="math inline">\(F_y(\alpha)\)</span>
+
+
+pour la roue de chaque essieu à partir de la cartographie <span
+
+
+class="math inline">\(F_y(\alpha, F_z)\)</span>.
+
+
+<ul>
+
+
+<li>Calculer le coefficient sur l’intervalle linéaire (valeur arrondie à
+
+
+la dizaine près).</li>
+
+
+</ul></li>
+
+
+<li>Valider le modèle linéaire construit <span class="math inline">\(F_y
+
+
+= c\times \alpha\)</span>
+
+
+<ul>
+
+
+<li>Tracer la courbe <span class="math inline">\(F_y(t)\)</span>
+
+
+expérimentale pour chaque essieu (variables Carsim : (Fy_L1+Fy_R1)/2,
+
+
+(Fy_L2+Fy_R2)/2)</li>
+
+
+<li>Sur le même graphique, tracer la courbe <span
+
+
+class="math inline">\(F_y(t)\)</span> théorique (variables Carsim :
+
+
+(Alpha_L1+Alpha_R1)/2, (Alpha_L2+Alpha_R2)/2))</li>
+
+
+</ul></li>
+
+
+</ul>
+
+
+<p style="text-align:center;">
+
+
+~~ ~~ ~~ ~~ ~~
+
+
+</p>
+
+
+<h1 id="validation-du-modèle-à-2ddl-en-bo">2. Validation du modèle à
+
+
+2ddl en BO</h1>
+
+
+<ul>
+
+
+<li>Rappel du modèle linéaire dérive-lacet <span
+
+
+class="math display">\[\begin{gather}\begin{bmatrix} \dot{\beta} \\
+
+
+\ddot{\psi}\end{bmatrix} = \begin{bmatrix} a_{11} &amp; a_{12} \\ a_{21}
+
+
+&amp; a_{22} \end{bmatrix} \begin{bmatrix} \beta \\
+
+
+\dot{\psi}\end{bmatrix} + \begin{bmatrix} b_1 \\ b_2\end{bmatrix} \delta
+
+
+\\ \\ \text{tel que }\qquad \begin{aligned} a_{11} &amp;=
+
+
+-\frac{2(c_f+c_r)}{m v_x} &amp;\quad a_{21} &amp;=
+
+
+-\frac{2(c_fl_f-c_rl_r)}{I_z} &amp;\quad b_{1} &amp;= \frac{2c_f}{m
+
+
+v_x}\\ a_{12} &amp;= -1 -\frac{2(c_fl_f -c_rl_r)}{m v_x^2} &amp;\quad
+
+
+a_{22} &amp;= -\frac{2(c_fl_f^2 +c_rl_r^2)}{I_z v_x} &amp;\quad b_{2}
+
+
+&amp;= \frac{2c_f l_f}{I_z}\end{aligned} \end{gather}\]</span></li>
+
+
+<li>Recueillir les paramètres du modèle à 2 ddl dans les blocs “sprung
+
+
+mass” et “suspension”.</li>
+
+
+<li>Validation
+
+
+<ul>
+
+
+<li>Simuler les deux modèles en parallèle avec la même entrée.</li>
+
+
+<li>Variable Carsim en entrée : IMP_STEER_L1, IMP_STEER_R1</li>
+
+
+<li>Variable Carsim en sortie : Beta, AVz</li>
+
+
+<li>Tracer les courbes <span class="math inline">\(\beta\)</span> et
+
+
+<span class="math inline">\(\dot{\psi}\)</span> des deux modèles pour
+
+
+démontrer la validité du modèle à 2ddl.</li>
+
+
+</ul></li>
+
+
+</ul>
+
+
+<p style="text-align:center;">
+
+
+~~ ~~ ~~ ~~ ~~
+
+
+</p>
+
+
+<h1 id="synthèse-de-la-commande-à-rejet-de-perturbation">3. Synthèse de
+
+
+la commande à rejet de perturbation</h1>
+
+
+<ul>
+
+
+<li><p>Rappel du modèle d’erreur distance-orientation <span
+
+
+class="math display">\[\begin{gather}
+
+
+\dot{e} = \underbrace{\begin{bmatrix} 0 &amp; 1 &amp; 0 &amp; 0 \\ 0
+
+
+&amp; a_{11} &amp; -a_{11} v_x &amp; (1+a_{12}) \\ 0 &amp; 0 &amp; 0
+
+
+&amp; 1\\ 0 &amp; \frac{a_{21}}{v_x} &amp; -a_{21} &amp; a_{22}
+
+
+\end{bmatrix}}_{A} e + \underbrace{\begin{bmatrix} 0 \\ b_1 v_x \\ 0 \\
+
+
+b_2 \end{bmatrix}}_{B_{2}} \delta + \underbrace{\begin{bmatrix} 0 \\
+
+
+a_{12} v_x \\ 0 \\ a_{22} \end{bmatrix}}_{B_{1}} \dot{\psi}_{des} \\ \\
+
+
+\text{tel que }\qquad \begin{aligned} e &amp;= \begin{bmatrix} e_{1}^T
+
+
+&amp; \dot{e}_{1}^T &amp; e_{2}^T &amp; \dot{e}_{2}^T \end{bmatrix}^T\\
+
+
+\dot{e}_2 &amp;= \dot{\psi} - v_{x} \dot{\psi}_{des}\\ \dot{e}_1 &amp;=
+
+
+v_{y} + v_x e_2 \approx v_{x} \beta + v_x e_2 \end{aligned}
+
+
+\end{gather}\]</span></p></li>
+
+
+<li><p>Construire le modèle d’erreur pour la simulation du modèle à
+
+
+2ddl.</p></li>
+
+
+<li><p>Résoudre le problème de minimisation suivant en utilisant les
+
+
+outils LMI de Matlab</p>
+
+
+<ul>
+
+
+<li><span class="math inline">\(C_{1} = \mathbb{I}\)</span>, car nous
+
+
+désirons minimiser la perturbation sur tous les états.</li>
+
+
+<li><span class="math inline">\(X = X^T \subset
+
+
+\mathbb{R}^{4\times4}\)</span></li>
+
+
+<li><span class="math inline">\(Y \subset \mathbb{R}^{1\times4}\)</span>
+
+
+<span class="math display">\[
+
+
+\begin{cases}
+
+
+\min &amp; \gamma\\
+
+
+\text{t.q} &amp; X &gt; 0 \\
+
+
+~ &amp; \begin{bmatrix}(AX+B_2Y)^T + AX + B_2Y &amp; B_1 &amp; X C^T \\
+
+
+* &amp;-\mathbb{I}&amp;\mathbb{O}\\ * &amp; * &amp;-\gamma^{2}
+
+
+\mathbb{I}\end{bmatrix}&lt;0
+
+
+\end{cases}
+
+
+\]</span></li>
+
+
+</ul></li>
+
+
+<li><p>Remplacer l’entrée “delta36kph” (boucle ouverte) par <span
+
+
+class="math inline">\(u = Ke\)</span> (boucle fermée).</p></li>
+
+
+<li><p>Tracer les courbes <span class="math inline">\(\beta\)</span> et
+
+
+<span class="math inline">\(\dot{\psi}\)</span> pour le modèle à 2ddl en
+
+
+boucle fermée.</p></li>
+
+
+<li><p>Tracer sur un même repère <span
+
+
+class="math inline">\((x,y)\)</span> la trajectoire de référence et la
+
+
+trajectoire du modèle à 2ddl, sachant que. <span class="math display">\[
+
+
+\begin{bmatrix} \dot{x}_{veh} \\ \dot{y}_{veh}\end{bmatrix} =
+
+
+\begin{bmatrix}v_x\cos(\psi)-v_x\beta\sin(\psi)\\ v_x\sin(\psi) +
+
+
+v_x\beta\cos(\psi)\end{bmatrix}
+
+
+\qquad\qquad
+
+
+\begin{bmatrix} \dot{x}_{traj} \\ \dot{y}_{traj} \\ \end{bmatrix} =
+
+
+\begin{bmatrix} v_{x}\cos(\psi_{des}) \\
+
+
+v_x\sin(\psi_{des})\end{bmatrix}
+
+
+\]</span></p></li>
+
+
+<li><p>Validation</p>
+
+
+<ul>
+
+
+<li>Remplacer le modèle à 2ddl par la S-function de Carsim avec les
+
+
+mêmes entrées/sortie qu’à la validation en BO.</li>
+
+
+<li>Tracer les courbes <span class="math inline">\(\beta\)</span> et
+
+
+<span class="math inline">\(\dot{\psi}\)</span> pour le modèle Carsim
+
+
+(celles-ci devraient être les mêmes que pour le modèle à 2ddl).</li>
+
+
+<li>Visualiser le résultat 3D sur Carsim.</li>
+
+
+</ul></li>
+
+
+</ul>
+
+
+<p style="text-align:center;">
+
+
+~~ ~~ ~~ ~~ ~~
+
+
+</p>
+
+
+<h1 id="annexe">Annexe</h1>
+
+
+<h4 id="lemme-borné-réel">Lemme borné réel</h4>
+
+
+<ul>
+
+
+<li>Soit le système décrit par le modèle d’état suivant <span
+
+
+class="math display">\[
+
+
+\begin{aligned}
+
+
+\dot{x}(t) &amp;= Ax(t) + B_{1} w(t) + B_{2} u(t) \\
+
+
+z(t) &amp;= C_{1}x(t)
+
+
+\end{aligned}
+
+
+\]</span></li>
+
+
+<li>S’il existe <span class="math inline">\(X &gt; 0\)</span> et <span
+
+
+class="math inline">\(Y\)</span> matrices de dimensions adéquates tel
+
+
+que la LMI suivante est vérifiée alors <span
+
+
+class="math inline">\(\frac{\|z\|_{2}}{\|w\|_{2}} \leq \gamma\)</span>
+
+
+<span class="math display">\[
+
+
+\begin{bmatrix}(AX+B_2Y)^T + AX + B_2Y &amp; B_1 &amp; X C_{1}^T \\ *
+
+
+&amp;-\mathbb{I}&amp;\mathbb{O}\\ * &amp; * &amp;-\gamma^{2}
+
+
+\mathbb{I}\end{bmatrix}&lt;0
+
+
+\]</span></li>
+
+
+<li>Le contrôleur assurant le rejet de perturbation avec un niveau <span
+
+
+class="math inline">\(\gamma\)</span> est alors donné par <span
+
+
+class="math inline">\(K = Y X^{-1}\)</span></li>
+
+
+</ul>
+
+
+</body>
+
+
+</html>
+
+
